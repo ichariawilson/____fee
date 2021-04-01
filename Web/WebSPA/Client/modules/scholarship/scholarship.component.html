@@ -1,0 +1,53 @@
+<section class="f-scholarship-hero">
+    <div class="container">
+
+    </div>
+</section>
+
+<section class="f-scholarship-filters">
+    <div class="container">
+        <div class="alert alert-warning f-scholarship-alert" role="alert" [hidden]="!errorReceived">
+            Error requesting scholarship items, please try later on
+        </div>
+        <label class="f-scholarship-label" data-title="location">
+            <select class="f-scholarship-filter" (change)="onLocationFilterChanged($event, $event.target.value)">
+                <option *ngFor="let location of locations" [value]="location.id">{{location.location}}</option>
+            </select>
+        </label>
+        <label class="f-scholarship-label" data-title="educationlevel">
+            <select class="f-scholarship-filter" (change)="onEducationLevelFilterChanged($event, $event.target.value)">
+                <option *ngFor="let educationlevel of educationlevels" [value]="educationlevel.id">{{educationlevel.educationlevel}}</option>
+            </select>
+        </label>
+        <img class="f-scholarship-send" (click)="onFilterApplied($event)" src="/assets/images/arrow-right.svg" />
+    </div>
+</section>
+
+<div class="container">
+    <div *ngIf="scholarship?.data.length > 0">
+        <f-pager [model]="paginationInfo" (changed)="onPageChanged($event)"></f-pager>
+
+        <div class="f-scholarship-items row">
+            <div class="f-scholarship-item col-md-4"
+                 *ngFor="let item of scholarship?.data">
+
+                <img class="f-scholarship-thumbnail" src="{{item.pictureUri}}" />
+                <button [ngClass]="{'f-scholarship-button': true, 'is-disabled': !authenticated}" (click)="addToCart(item)">
+                    [ ADD FOR APPLICATION ]
+                </button>
+
+                <div class="f-scholarship-name">
+                    <span>{{item.name}}</span>
+                </div>
+                <div class="f-scholarship-amount">
+                    <span>{{item.amount | number:'.2-2'}}</span>
+                </div>
+            </div>
+        </div>
+
+        <f-pager [model]="paginationInfo" (changed)="onPageChanged($event)"></f-pager>
+    </div>
+    <div *ngIf="scholarship?.data.length == 0">
+        <span>THERE ARE NO RESULTS THAT MATCH YOUR SEARCH</span>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+﻿@model Microsoft.Fee.WebMVC.ViewModels.Pagination.PaginationInfo
+
+<div class="f-pager">
+    <div class="container">
+        <article class="f-pager-wrapper row">
+            <nav>
+                <a class="f-pager-item f-pager-item--navigable @Model.Previous"
+                    id="Previous"                    
+                    asp-controller="Scholarship"
+                    asp-action="Index"
+                    asp-route-page="@(Model.ActualPage -1)"
+                    aria-label="Previous">
+                    Previous
+                </a>
+
+                <span class="f-pager-item">
+                    Showing @Model.ItemsPerPage of @Model.TotalItems scholarships - Page @(Model.ActualPage + 1) - @Model.TotalPages
+                </span>
+
+                <a class="f-pager-item f-pager-item--navigable @Model.Next"
+                    id="Next"                    
+                    asp-controller="Scholarship"
+                    asp-action="Index"
+                    asp-route-page="@(Model.ActualPage + 1)"
+                    aria-label="Next">
+                    Next
+                </a>
+            </nav>
+        </article>
+    </div>
+</div>
+

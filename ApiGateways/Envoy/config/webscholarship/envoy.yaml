@@ -1,0 +1,103 @@
+admin:
+  access_log_path: "/dev/null"
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 8001
+static_resources:
+  listeners:
+  - address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 80
+    filter_chains:
+    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          codec_type: auto
+          stat_prefix: ingress_http
+          route_config:
+            name: fee_backend_route
+            virtual_hosts:
+            - name: fee_backend
+              domains:
+              - "*"
+              routes:
+              - name: "s-short"
+                match:
+                  prefix: "/s/"
+                route:
+                  auto_host_rewrite: true
+                  prefix_rewrite: "/scholarship-api/"
+                  cluster: scholarship
+              - name: "s-long"
+                match:
+                  prefix: "/scholarship-api/"
+                route:
+                  auto_host_rewrite: true
+                  cluster: scholarship
+              - name: "a-short"
+                match:
+                  prefix: "/a/"
+                route:
+                  auto_host_rewrite: true
+                  prefix_rewrite: "/applying-api/"
+                  cluster: applying
+              - name: "a-long"
+                match:
+                  prefix: "/applying-api/"
+                route:
+                  auto_host_rewrite: true
+                  cluster: applying
+              - name: "agg"
+                match:
+                  prefix: "/"
+                route:
+                  auto_host_rewrite: true
+                  prefix_rewrite: "/"
+                  cluster: applyingagg
+          http_filters:
+          - name: envoy.router
+          access_log:
+          - name: envoy.file_access_log
+            filter:
+              not_health_check_filter: {}
+            config:
+              json_format:
+                time: "%START_TIME%"
+                protocol: "%PROTOCOL%"
+                duration: "%DURATION%"
+                request_method: "%REQ(:METHOD)%"
+                request_host: "%REQ(HOST)%"
+                path: "%REQ(X-ENVOY-ORIGINAL-PATH?:PATH)%"
+                response_flags: "%RESPONSE_FLAGS%"
+                route_name: "%ROUTE_NAME%"
+                upstream_host: "%UPSTREAM_HOST%"
+                upstream_cluster: "%UPSTREAM_CLUSTER%"
+                upstream_local_address: "%UPSTREAM_LOCAL_ADDRESS%"
+              path: "/tmp/access.log"
+  clusters:
+  - name: applyingagg
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    hosts:
+    - socket_address:
+        address: mobileapplyingagg
+        port_value: 80
+  - name: scholarship
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    hosts:
+    - socket_address:
+        address: scholarship-api
+        port_value: 80
+  - name: applying
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    hosts:
+    - socket_address:
+        address: applying-api
+        port_value: 80

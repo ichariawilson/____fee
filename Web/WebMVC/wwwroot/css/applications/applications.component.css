@@ -1,0 +1,75 @@
+﻿.f-applications {
+  min-height: 80vh;
+  overflow-x: hidden;
+}
+
+.f-applications-header {
+  background-color: #00A69C;
+  height: 4rem;
+}
+
+.f-applications-back {
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 4rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.35s;
+}
+
+.f-applications-back:hover {
+  color: #FFFFFF;
+  transition: color 0.35s;
+}
+
+.f-applications-titles {
+  padding-bottom: 1rem;
+  padding-top: 2rem;
+}
+
+.f-applications-title {
+  text-transform: uppercase;
+}
+
+.f-applications-items {
+  height: 2rem;
+  line-height: 2rem;
+  position: relative;
+}
+
+.f-applications-items:nth-of-type(2n + 1):before {
+  background-color: #EEEEFF;
+  content: '';
+  height: 100%;
+  left: 0;
+  margin-left: -100vw;
+  position: absolute;
+  top: 0;
+  width: 200vw;
+  z-index: -1;
+}
+
+.f-applications-item {
+  font-weight: 300;
+}
+
+.f-applications-item--hover {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.f-applications-items:hover .f-applications-item--hover {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.f-applications-link {
+  color: #83D01B;
+  text-decoration: none;
+  transition: color 0.35s;
+}
+
+.f-applications-link:hover {
+  color: #75b918;
+  transition: color 0.35s;
+}
+

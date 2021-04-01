@@ -1,0 +1,94 @@
+﻿{
+    "ReRoutes": [
+      {
+        "DownstreamPathTemplate": "/api/{version}/{everything}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "applying-basket.api",
+            "Port": 80
+          }
+        ],
+        "UpstreamPathTemplate": "/api/{version}/b/{everything}",
+        "UpstreamHttpMethod": [],
+        "AuthenticationOptions": {
+          "AuthenticationProviderKey": "IdentityApiKey",
+          "AllowedScopes": []
+        }
+      },
+      {
+        "DownstreamPathTemplate": "/api/{version}/{everything}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "applying.api",
+            "Port": 80
+          }
+        ],
+        "UpstreamPathTemplate": "/api/{version}/a/{everything}",
+        "UpstreamHttpMethod": [],
+        "AuthenticationOptions": {
+          "AuthenticationProviderKey": "IdentityApiKey",
+          "AllowedScopes": []
+        }
+      },
+      {
+        "DownstreamPathTemplate": "/{everything}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "mobileapplyingagg",
+            "Port": 80
+          }
+        ],
+        "UpstreamPathTemplate": "/{everything}",
+        "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
+        "AuthenticationOptions": {
+          "AuthenticationProviderKey": "IdentityApiKey",
+          "AllowedScopes": []
+        }
+      },
+      {
+        "DownstreamPathTemplate": "/{everything}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "applying.api",
+            "Port": 80
+          }
+        ],
+        "UpstreamPathTemplate": "/applications-api/{everything}",
+        "UpstreamHttpMethod": []
+      },
+      {
+        "DownstreamPathTemplate": "/{everything}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "applying-basket.api",
+            "Port": 80
+          }
+        ],
+        "UpstreamPathTemplate": "/applying-basket-api/{everything}",
+        "UpstreamHttpMethod": []
+      },
+      {
+        "DownstreamPathTemplate": "/{everything}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "payment.api",
+            "Port": 80
+          }
+        ],
+        "UpstreamPathTemplate": "/payment-api/{everything}",
+        "UpstreamHttpMethod": []
+      }
+  
+    ],
+      "GlobalConfiguration": {
+        "RequestIdKey": "OcRequestId",
+        "AdministrationPath": "/administration"
+      }
+    }
+    

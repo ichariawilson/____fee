@@ -1,0 +1,69 @@
+<div class="f-applications_new-header">
+    <div class="container">
+        <a class="f-applications_new-back" routerLink="/basket">Back to basket</a>
+    </div>
+</div>
+
+<div class="container">
+    <div  class="alert alert-warning f-applications_new-alert" role="alert" [hidden]="!errorReceived">
+        Not possible to create a new application, please try later on
+    </div>
+    <form [formGroup]="newApplicationForm" (ngSubmit)="submitForm(newApplicationForm.value)">
+        <section class="f-applications_new-section">
+            <h4 class="f-applications_new-title">Profile</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group" [ngClass]="{'has-error':!newApplicationForm.controls['idnumber'].valid && newApplicationForm.controls['idnumber'].touched}">
+                        <label class="f-applications_new-title">ID Number</label>
+                        <input class="form-control form-input" type="text" placeholder="idnumber" [formControl]="newApplicationForm.controls['idnumber']">
+                        <div *ngIf="newApplicationForm.controls['idnumber'].hasError('required') && newApplicationForm.controls['idnumber'].touched" class="alert alert-danger">Required field.</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" [ngClass]="{'has-error':!newApplicationForm.controls['request'].valid && newApplicationForm.controls['request'].touched}">
+                        <label class="f-applications_new-title">Request</label>
+                        <input class="form-control form-input" type="text" placeholder="Request" [formControl]="newApplicationForm.controls['request']">
+                        <div *ngIf="newApplicationForm.controls['request'].hasError('required') && newApplicationForm.controls['request'].touched" class="alert alert-danger">Required field.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="f-applications_new-section">
+            <article class="f-applications_new-titles row">
+                <section class="f-applications_new-title col-12">Application details</section>
+            </article>
+
+            <article class="f-applications_new-items f-applications_new-placeapplication row"
+                     *ngFor="let item of application.applicationItems">
+                <section class="f-applications_new-item col-md-4 hidden-md-down">
+                    <img class="f-applications_new-image" src="{{item.pictureurl}}">
+                </section>
+                <section class="f-applications_new-item f-applications_new-item--middle col-4">{{item.scholarshipitemname}}</section>
+                <section class="f-applications_new-item f-applications_new-item--middle col-1">KES {{item.slotamount | number:'.2-2'}}</section>
+                <section class="f-applications_new-item f-applications_new-item--middle col-1">{{item.slots}}</section>
+                <section class="f-applications_new-item f-applications_new-item--middle col-2">KES {{(item.slots * item.slotamount) | number:'.2-2'}}</section>
+            </article>
+        </section>
+
+        <section class="f-applications_new-section f-applications_new-section--right">
+            <article class="f-applications_new-titles row">
+                <section class="f-applications_new-title col-9"></section>
+                <section class="f-applications_new-title col-2">Total</section>
+            </article>
+
+            <article class="f-applications_new-items row">
+                <section class="f-applications_new-item col-9"></section>
+                <section class="f-applications_new-item f-applications_new-item--mark col-2">KES {{application.total | number:'.2-2'}}</section>
+            </article>
+        </section>
+        <section class="f-applications_new-section">
+            <div class="form-group row">
+                <div class="col-md-9">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn f-applications_new-placeapplication" [disabled]="!newApplicationForm.valid || isApplicationProcessing">[ Place Application ]</button>
+                </div>
+            </div>
+        </section>
+    </form>
+</div>

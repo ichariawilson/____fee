@@ -1,0 +1,56 @@
+﻿@page
+@model Microsoft.Fee.Services.Student.Identity.API.Views.Account.IndexModel
+@{ 
+    ViewData["Title"] = "Profiles";
+}
+
+<div class="row">
+  <div class="col-sm-12">
+      <h1>Profiles</h1>
+
+    <p>
+      <a asp-page="./Create">Create a new profile</a>
+    </p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <table class="table">
+        <tr>
+            <th>Profile ID</th>
+            <th>Date of Birth</th>
+            <th>Subscription Type</th>
+            <th>Hobby</th>
+            <th>Education Level</th>
+            <th>County</th>
+            <th>School</th>
+        </tr>
+      @foreach (var item in Model.ProfileDisplayList)
+      {
+        <tr>
+          <td>
+            @Html.DisplayFor(modelItem => item.ProfileId)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.DateofBirth)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.PaymentType)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.Hobby)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.Level)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.County)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.School)
+          </td>
+        </tr>
+      }
+    </table>
+  </div>
+</div>

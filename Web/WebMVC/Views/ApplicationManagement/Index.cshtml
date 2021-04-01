@@ -1,0 +1,44 @@
+﻿@using Microsoft.Fee.WebMVC.ViewModels
+
+@model IEnumerable<Microsoft.Fee.WebMVC.ViewModels.Application>
+
+@{
+     ViewData["Title"] = "My Applications";
+     var headerList = new List<Header>() {
+          new Header() { Controller = "Scholarship", Text = "Back to scholarships" } };
+}
+
+<div class="f-applications">
+    <partial name="_Header" model="headerList"/>
+
+    <div class="container">
+        <article class="f-applications-titles row">
+            <section class="f-applications-title col-2">Application number</section>
+            <section class="f-applications-title col-4">Date</section>
+            <section class="f-applications-title col-2">Total</section>
+            <section class="f-applications-title col-2">Status</section>
+            <section class="f-applications-title col-2"></section>
+        </article>
+
+        @foreach (var item in Model)
+        {
+            <article class="f-applications-items row">
+                <section class="f-applications-item col-2">@Html.DisplayFor(modelItem => item.ApplicationNumber)</section>
+                <section class="f-applications-item col-4">@Html.DisplayFor(modelItem => item.Date)</section>
+                <section class="f-applications-item col-2">$ @Html.DisplayFor(modelItem => item.Total)</section>
+                <section class="f-applications-item col-2">@Html.DisplayFor(modelItem => item.Status)</section>
+                <section class="f-applications-item col-2">
+                    <form asp-action="ApplicationProcess" id="applicationForm+@item.ApplicationNumber" method="post">
+                        <input type="hidden" name="applicationId" value="@item.ApplicationNumber" />
+                        <select name="actionCode" asp-items="@item.ActionCodeSelectList"
+                                disabled=@(item.Status != "paid")
+                                onchange="document.getElementById('applicationForm+@item.ApplicationNumber').submit()">
+                            <option value="">&nbsp;&nbsp;Select Action</option>
+                            <option value="">------------------</option>
+                        </select>
+                    </form>
+                </section>
+            </article>
+        }
+    </div>
+</div>

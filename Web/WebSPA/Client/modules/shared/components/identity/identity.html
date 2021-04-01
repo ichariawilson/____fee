@@ -1,0 +1,35 @@
+<div class="f-identity">
+    <section class="f-identity-section"
+             *ngIf="!authenticated">
+        <div class="f-identity-item"
+             (click)="login()">
+
+            <div class="f-identity-name f-identity-name--upper">Login</div>
+        </div>
+    </section>
+
+    <section class="f-identity-section"
+         *ngIf="authenticated">
+
+        <div class="f-identity-name">{{userName}}</div>
+        <img class="f-identity-image" src="assets/images/arrow-down.png">
+    </section>
+
+    <section class="f-identity-drop"
+             *ngIf="authenticated">
+
+        <div class="f-identity-item"
+             [routerLink]="['applications']">
+
+            <div class="f-identity-name f-identity-name--upper">My applications</div>
+            <img class="f-identity-image" src="assets/images/my_applications.png">
+        </div>
+
+        <div class="f-identity-item"
+             (click)="logoutClicked($event)">
+
+            <div class="f-identity-name f-identity-name--upper">Log Out</div>
+            <img class="f-identity-image" src="assets/images/logout.png">
+        </div>
+    </section>
+</div>

@@ -1,0 +1,50 @@
+@using Microsoft.Fee.WebMVC.ViewModels
+
+@model IEnumerable<Microsoft.Fee.WebMVC.ViewModels.Application>
+
+@{
+     ViewData["Title"] = "My Applications";
+     var headerList= new List<Header>() {
+        new Header() { Controller = "Scholarship", Text = "Back to scholarships" },
+        new Header() { Text = " / " },
+        new Header() { Controller = "ApplicationManagement", Text = "Applications Management" } };
+}
+
+<div class="f-applications">
+    <partial name="_Header" model="headerList"/>
+
+    <div class="container">
+        <article class="f-applications-titles row">
+            <section class="f-applications-title col-2">Application number</section>
+            <section class="f-applications-title col-4">Date</section>
+            <section class="f-applications-title col-2">Total</section>
+            <section class="f-applications-title col-2">Status</section>
+            <section class="f-applications-title col-2"></section>
+        </article>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <article class="f-applications-items row">
+                    <section class="f-applications-item col-2">@Html.DisplayFor(modelItem => item.ApplicationNumber)</section>
+                    <section class="f-applications-item col-4">@Html.DisplayFor(modelItem => item.Date)</section>
+                    <section class="f-applications-item col-2">$ @Html.DisplayFor(modelItem => item.Total)</section>
+                    <section class="f-applications-item col-2">@Html.DisplayFor(modelItem => item.Status)</section>
+                    <section class="f-applications-item col-1">
+                        <a class="f-applications-link" asp-controller="Application" asp-action="Detail" asp-route-applicationId="@item.ApplicationNumber">Detail</a>
+                    </section>
+                    <section class="f-applications-item col-1">
+                        @if (item.Status.ToLower() == "submitted")
+                        {
+                            <a class="f-applications-link" asp-controller="Application" asp-action="cancel" asp-route-applicationId="@item.ApplicationNumber">Cancel</a>
+                        }
+                    </section>
+                </article>
+            }
+        }
+    </div>
+</div>
+
+
+
+

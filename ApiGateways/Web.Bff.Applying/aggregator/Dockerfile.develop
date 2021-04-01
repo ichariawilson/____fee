@@ -1,0 +1,17 @@
+FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim
+ARG BUILD_CONFIGURATION=Debug
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV DOTNET_USE_POLLING_FILE_WATCHER=true
+EXPOSE 80
+
+WORKDIR /src
+COPY ["ApiGateways/Web.Bff.Applying/Web.Applying.HttpAggregator/Web.Applying.HttpAggregator.csproj", "ApiGateways/Web.Bff.Applying/Web.Applying.HttpAggregator/"]
+COPY ["src/BuildingBlocks/DevspacesSupport/Devspaces.Support/Devspaces.Support.csproj", "src/BuildingBlocks/DevspacesSupport/Devspaces.Support/"]
+COPY ["src/NuGet.config", "src/NuGet.config"]
+
+RUN dotnet restore "ApiGateways/Web.Bff.Applying/Web.Applying.HttpAggregator/Web.Applying.HttpAggregator.csproj"
+COPY . .
+WORKDIR "/src/ApiGateways/Web.Bff.Applying/Web.Applying.HttpAggregator"
+RUN dotnet build -c $BUILD_CONFIGURATION
+
+CMD ["dotnet", "run", "--no-build", "--no-launch-profile", "-c", "$BUILD_CONFIGURATION", "--"]]

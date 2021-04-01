@@ -1,0 +1,125 @@
+﻿@page
+@model Microsoft.Fee.Services.Sponsor.API.Views.Account.CreateModel
+@{
+    ViewData["Title"] = "Create a profile";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>Create your profile</h1>
+        <p>
+            Create a profile by entering your date of birth and selecting an education level, a location and a school (if any).
+        </p>
+    </div>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <div class="form-group">
+        @Html.LabelFor(model => model.ProfileViewModel.ProfileId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ProfileViewModel.ProfileId,
+                new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.ProfileViewModel.ProfileId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ProfileViewModel.DateofBirth, htmlAttributes: new { id = "dt1", @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ProfileViewModel.DateofBirth,
+              new { htmlAttributes = new { @class = "form-control", @autofocus = "autofocus", @required = true } })
+            @Html.ValidationMessageFor(model => model.ProfileViewModel.DateofBirth, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => Model.ProfileViewModel.EducationLevelId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-5">
+            @Html.DropDownListFor(x => Model.ProfileViewModel.EducationLevelId,
+              new SelectList(Model.ProfileViewModel.EducationLevels, "Value", "Text"),
+              htmlAttributes: new { @class = "form-control", id = "EducationLevel", @required = true })
+            @Html.ValidationMessageFor(x => x.ProfileViewModel.EducationLevelId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => Model.ProfileViewModel.LocationId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-5">
+            @Html.DropDownListFor(x => Model.ProfileViewModel.LocationId,
+              new SelectList(Model.ProfileViewModel.Locations, "Value", "Text"),
+              htmlAttributes: new { @class = "form-control", id = "Location", @required = true })
+            @Html.ValidationMessageFor(x => x.ProfileViewModel.LocationId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => Model.ProfileViewModel.SchoolId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-5">
+            @Html.DropDownListFor(x => Model.ProfileViewModel.SchoolId,
+              new SelectList(Model.ProfileViewModel.Schools, "Value", "Text"),
+              htmlAttributes: new { @class = "form-control", @id = "School" })
+            @Html.ValidationMessageFor(x => x.ProfileViewModel.SchoolId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+}
+<div class="row">
+    <div class="col-md-12">
+        <a asp-page="./Index">Back to Profiles</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $('#Location').change(function () {
+            var selectedLocation = $("#Location").val();
+            var schoolsSelect = $('#School');
+            schoolsSelect.empty();
+            if (selectedLocation != null && selectedLocation != '') {
+                $.ajax({
+                    type: "POST",
+                    url: "/Profiles/Create?handler=Schools",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    data: selectedLocation,
+                    contentType: "json; charset=utf-8",
+                    success: function (schools) {
+                        if (schools != null && !jQuery.isEmptyObject(schools)) {
+                            schoolsSelect.append($('<option/>', {
+                                value: null,
+                                text: ""
+                            }));
+                            $.each(schools, function (index, school) {
+                                schoolsSelect.append("<option value='" + school.value + "'>" + school.text + "</option>");
+                            });
+                        };
+                    },
+                    failure: function (response) {
+                        alert(response);
+                    }
+                });
+            }
+        });
+        $.validator.addMethod('date', function (value, element) {
+            if (this.optional(element)) {
+                return true;
+            }
+            var valid = true;
+            try {
+                $.datepicker.parseDate('dd/mm/yy', value);
+            }
+            catch (err) {
+                valid = false;
+            }
+            return valid;
+        });
+        $('#dt1').datepicker({ dateFormat: 'dd/mm/yy' });
+    </script>
+}

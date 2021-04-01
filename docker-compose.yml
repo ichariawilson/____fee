@@ -1,0 +1,225 @@
+version: '3.4'
+
+services:
+
+  seq:
+    image: datalust/seq:latest
+
+  sqldata:
+    image: mcr.microsoft.com/mssql/server:2019-latest 
+
+  nosqldata:
+    image: mongo
+
+  basketdata:
+    image: redis:alpine
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+
+  corporatesponsoridentity-api:
+    image: ${REGISTRY:-fee}/corporatesponsoridentity.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Identity/CorporateSponsorIdentity.API/Dockerfile
+    depends_on:
+      - basketdata
+      - sqldata
+
+  sponsor-api:
+    image: ${REGISTRY:-fee}/sponsor.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Identity/Sponsor.API/Dockerfile
+    depends_on:
+      - basketdata
+      - sqldata
+
+  student-identity-api:
+    image: ${REGISTRY:-fee}/student-identity.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Identity/Student.Identity.API/Dockerfile
+    depends_on:
+      - basketdata
+      - sqldata
+
+  scholarship-api:
+    image: ${REGISTRY:-fee}/scholarship.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Scholarship/Scholarship.API/Dockerfile
+    depends_on:
+      - sqldata
+      - rabbitmq
+      - sponsor-api
+      - corporatesponsoridentity-api
+
+  applying-basket-api:
+    image: ${REGISTRY:-fee}/applying-basket.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Basket/Applying.Basket.API/Dockerfile
+    depends_on:
+      - basketdata
+      - student-identity-api
+      - rabbitmq
+
+  applying-api:
+    image: ${REGISTRY:-fee}/applying.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Applying/Applying.API/Dockerfile
+    depends_on:
+      - sqldata
+      - student-identity-api
+      - rabbitmq
+
+  applying-backgroundtasks:
+    image: ${REGISTRY:-fee}/applying.backgroundtasks:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Applying/Applying.BackgroundTasks/Dockerfile
+    depends_on:
+      - sqldata
+      - rabbitmq
+
+  payment-api:
+    image: ${REGISTRY:-fee}/payment.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Payment/Payment.API/Dockerfile
+    depends_on:
+      - rabbitmq
+
+  webhooks-api:
+    image: ${REGISTRY:-fee}/webhooks.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Webhooks/Webhooks.API/Dockerfile
+    depends_on:
+      - sqldata
+
+  mobileapplyingapigw:
+    image: envoyproxy/envoy:v1.11.1
+
+  mobilescholarshipapigw:
+    image: envoyproxy/envoy:v1.11.1
+
+  webapplyingapigw:
+    image: envoyproxy/envoy:v1.11.1
+
+  webscholarshipapigw:
+    image: envoyproxy/envoy:v1.11.1
+
+  mobileapplyingagg:
+    image: ${REGISTRY:-fee}/mobileapplyingagg:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: ApiGateways/Mobile.Bff.Applying/aggregator/Dockerfile
+    depends_on:
+      - nosqldata
+      - sqldata
+      - student-identity-api
+      - rabbitmq
+      - applying-api
+      - scholarship-api
+      - applying-basket-api
+
+  webapplyingagg:
+    image: ${REGISTRY:-fee}/webapplyingagg:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: ApiGateways/Web.Bff.Applying/aggregator/Dockerfile
+    depends_on:
+      - nosqldata
+      - sqldata
+      - student-identity-api
+      - rabbitmq
+      - applying-api
+      - scholarship-api
+      - applying-basket-api
+
+  mobilescholarshipagg:
+    image: ${REGISTRY:-fee}/mobilescholarshipagg:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: ApiGateways/Mobile.Bff.Scholarship/aggregator/Dockerfile
+    depends_on:
+      - nosqldata
+      - sqldata
+      - corporatesponsoridentity-api
+      - sponsor-api
+      - rabbitmq
+      - applying-api
+      - scholarship-api
+
+  webscholarshipagg:
+    image: ${REGISTRY:-fee}/webscholarshipagg:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: ApiGateways/Web.Bff.Scholarship/aggregator/Dockerfile
+    depends_on:
+      - nosqldata
+      - sqldata
+      - corporatesponsoridentity-api
+      - sponsor-api
+      - rabbitmq
+      - applying-api
+      - scholarship-api
+
+  applying-signalrhub:
+    image: ${REGISTRY:-fee}/applying.signalrhub:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Applying/Applying.SignalrHub/Dockerfile
+    depends_on:
+      - nosqldata
+      - sqldata
+      - student-identity-api
+      - rabbitmq
+      - applying-api
+      - scholarship-api
+      - applying-basket-api
+
+  webstatus:
+    image: ${REGISTRY:-fee}/webstatus:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Web/WebStatus/Dockerfile
+
+  webspa:
+    image: ${REGISTRY:-fee}/webspa:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Web/WebSPA/Dockerfile
+      args:
+        NODE_IMAGE: ${NODE_IMAGE:-node:10.13}
+    depends_on:
+      - webapplyingagg
+      - webapplyingapigw
+
+  webmvc:
+    image: ${REGISTRY:-fee}/webmvc:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Web/WebMVC/Dockerfile
+    depends_on:
+      - webapplyingagg
+      - webapplyingapigw
+
+  scholarshipmvc:
+    image: ${REGISTRY:-fee}/scholarshipmvc:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Web/ScholarshipMVC/Dockerfile
+    depends_on:
+      - webscholarshipagg
+
+  webhooks-client:
+    image: ${REGISTRY:-fee}/webhooks.client:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Web/WebhookClient/Dockerfile
+    depends_on:
+      - webhooks-api

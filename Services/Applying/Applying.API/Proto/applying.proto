@@ -1,0 +1,38 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcApplying";
+
+package ApplyingApi;
+
+service ApplyingGrpc {
+	rpc CreateApplicationDraftFromBasketData(CreateApplicationDraftCommand) returns (ApplicationDraftDTO) {}
+}
+
+message CreateApplicationDraftCommand {
+	string studentId = 1;
+    repeated BasketItem items = 2;
+}
+
+
+message BasketItem {
+    string id = 1;
+    int32 scholarshipItemId = 2;
+    string scholarshipItemName = 3;
+    double slotAmount = 4;
+    double oldSlotAmount = 5;
+    int32 slots = 6;
+    string pictureUrl = 7;
+}
+
+message ApplicationDraftDTO {
+    double total = 1;
+    repeated ApplicationItemDTO applicationItems = 2;
+}
+message ApplicationItemDTO {
+    int32 scholarshipItemId = 1;
+    string scholarshipItemName = 2;
+    double slotAmount = 3;
+    int32 slots = 4;
+    string pictureUrl = 5;
+}
+

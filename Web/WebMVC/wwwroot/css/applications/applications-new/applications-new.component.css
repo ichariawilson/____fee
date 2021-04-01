@@ -1,0 +1,96 @@
+﻿.f-applications_new {
+  min-height: 80vh;
+}
+
+.f-applications_new-header {
+  background-color: #00A69C;
+  height: 4rem;
+}
+
+.f-applications_new-back {
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 4rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.35s;
+}
+
+.f-applications_new-back:hover {
+  color: #FFFFFF;
+  transition: color 0.35s;
+}
+
+.f-applications_new-section {
+  padding: 1rem 0;
+}
+
+.f-applications_new-section--right {
+  text-align: right;
+}
+
+.f-applications_new-placeapplication {
+  background-color: #83D01B;
+  bapplication: 0;
+  bapplication-radius: 0;
+  color: #FFFFFF;
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-top: 1rem;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  transition: all 0.35s;
+}
+
+.f-applications_new-placeapplication:hover {
+  background-color: #4a760f;
+  transition: all 0.35s;
+}
+
+.f-applications_new-titles {
+  padding-bottom: 1rem;
+  padding-top: 2rem;
+}
+
+.f-applications_new-title {
+  font-size: 1.25rem;
+  text-transform: uppercase;
+}
+
+.f-applications_new-items--bapplication {
+  bapplication-bottom: 1px solid #EEEEEE;
+  padding: .5rem 0;
+}
+
+.f-applications_new-items--bapplication:last-of-type {
+  bapplication-color: transparent;
+}
+
+.f-applications_new-item {
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+.f-applications_new-item--middle {
+  line-height: 8rem;
+}
+
+@media screen and (max-width: 768px) {
+  .f-applications_new-item--middle {
+    line-height: 1rem;
+  }
+}
+
+.f-applications_new-item--mark {
+  color: #83D01B;
+}
+
+.f-applications_new-image {
+  height: 8rem;
+}
+
+.f-applications_new-alert {
+  margin-top: 10px;
+}
+

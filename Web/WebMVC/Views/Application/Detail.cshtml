@@ -1,0 +1,73 @@
+@using Microsoft.Fee.WebMVC.ViewModels
+
+@model Microsoft.Fee.WebMVC.ViewModels.Application
+
+@{
+     ViewData["Title"] = "Application Detail";
+     var headerList= new List<Header>() {
+     new Header() { Controller = "Scholarship", Text = "Back to scholarships" } };
+}
+
+<div class="f-applications_detail">
+    <partial name="_Header" model="headerList"/>
+
+    <div class="container">
+        <section class="f-applications_detail-section">
+            <article class="f-applications_detail-titles row">
+                <section class="f-applications_detail-title col-3">Application number</section>
+                <section class="f-applications_detail-title col-3">Date</section>
+                <section class="f-applications_detail-title col-3">Total</section>
+                <section class="f-applications_detail-title col-3">Status</section>
+            </article>
+
+            <article class="f-applications_detail-items row">
+                <section class="f-applications_detail-item col-3">@Model.ApplicationNumber</section>
+                <section class="f-applications_detail-item col-3">@Model.Date</section>
+                <section class="f-applications_detail-item col-3">$@Model.Total</section>
+                <section class="f-applications_detail-title col-3">@Model.Status</section>
+            </article>
+        </section>
+        
+        <section class="f-applications_detail-section">
+            <article class="f-applications_detail-titles row">
+                <section class="f-applications_detail-title col-12">Description</section>
+            </article>
+
+            <article class="f-applications_detail-items row">
+                <section class="f-applications_detail-item col-12">@Model.Description</section>
+            </article>
+        </section>
+
+        <section class="f-applications_detail-section">
+            <article class="f-applications_detail-titles row">
+                <section class="f-applications_detail-title col-12">APPLICATION DETAILS</section>
+            </article>
+
+            @for (int i = 0; i < Model.ApplicationItems.Count; i++)
+            {
+                var item = Model.ApplicationItems[i];
+                <article class="f-applications_detail-items f-applications_detail-items--border row">
+                    <section class="f-applications_detail-item col-md-4 hidden-md-down">
+                        <img class="f-applications_detail-image" src="@item.PictureUrl">
+                    </section>
+                    <section class="f-applications_detail-item f-applications_detail-item--middle col-4">@item.ScholarshipItemName</section>
+                    <section class="f-applications_detail-item f-applications_detail-item--middle col-1">$ @item.SlotAmount.ToString("N2")</section>
+                    <section class="f-applications_detail-item f-applications_detail-item--middle col-1">@item.Slots</section>
+                    <section class="f-applications_detail-item f-applications_detail-item--middle col-2">$ @Math.Round(item.Slots * item.SlotAmount, 2).ToString("N2")</section>
+                </article>
+            }
+        </section>
+
+        <section class="f-applications_detail-section f-applications_detail-section--right">
+            <article class="f-applications_detail-titles f-basket-titles--clean row">
+                <section class="f-applications_detail-title col-9"></section>
+                <section class="f-applications_detail-title col-2">TOTAL</section>
+            </article>
+
+            <article class="f-applications_detail-items row">
+                <section class="f-applications_detail-item col-9"></section>
+                <section class="f-applications_detail-item f-applications_detail-item--mark col-2">$ @Model.Total.ToString("N2")</section>
+            </article>
+        </section>
+    </div>
+</div>

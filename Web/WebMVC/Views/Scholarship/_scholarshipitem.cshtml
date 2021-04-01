@@ -1,0 +1,16 @@
+﻿@model ScholarshipItem
+
+
+<form asp-controller="Cart" asp-action="AddToCart">
+
+    <img class="f-catalog-thumbnail" src="@Model.PictureUri" />
+    <input class="f-catalog-button @((!User.Identity.IsAuthenticated) ? "is-disabled" : "")" type="submit" value="[ ADD TO CART ]" />
+
+    <div class="f-scholarship-name">
+        <span>@Model.Name</span>
+    </div>
+    <div class="f-scholarship-amount">
+        <span>@Model.Amount.ToString("N2")</span>
+    </div>
+    <input type="hidden" asp-for="@Model.Id" name="id" />
+</form>

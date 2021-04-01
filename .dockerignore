@@ -1,0 +1,16 @@
+.dockerignore
+.env
+.git
+.gitignore
+.vs
+.vscode
+docker-compose*.yml
+*.md
+hosts
+LICENSE
+**/bin/
+**/obj/
+**/wwwroot/lib/
+global.json
+**/appsettings.localhost.json
+packages/

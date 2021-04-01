@@ -1,0 +1,58 @@
+﻿@model Microsoft.Fee.WebMVC.ViewModels.ScholarshipViewModels.IndexViewModel
+
+@{
+    ViewData["Title"] = "Scholarship";
+}
+<section class="f-catalog-hero">
+    <div class="container">
+        <img class="f-catalog-title" src="~/images/main_banner_text.png" />
+    </div>
+</section>
+
+<section class="f-catalog-filters">
+    <div class="container">
+        <form asp-action="Index" asp-controller="Scholarship" method="post">
+            <label class="f-catalog-label" data-title="brand">
+                <select asp-for="@Model.LocationFilterApplied" asp-items="@Model.Locations" class="f-catalog-filter"></select>
+            </label>
+            <label class="f-catalog-label" data-title="type">
+                <select asp-for="@Model.EducationLevelFilterApplied" asp-items="@Model.EducationLevels" class="f-catalog-filter"></select>
+            </label>
+            <input class="f-catalog-send" type="image" src="~/images/arrow-right.svg" />
+        </form>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row">
+        <br />
+        @if(ViewBag.BasketInoperativeMsg != null)
+        {
+        <div class="alert alert-warning" role="alert">
+            &nbsp;@ViewBag.BasketInoperativeMsg
+        </div>
+        }
+    </div>
+
+    @if (Model.ScholarshipItems.Count() > 0)
+    {
+    <partial name="_pagination" for="PaginationInfo" />
+
+    <div class="f-scholarship-items row">
+        @foreach (var scholarshipItem in Model.ScholarshipItems)
+            {
+        <div class="f-scholarship-item col-md-4">
+            <partial name="_scholarshipitem" model="scholarshipItem" />
+        </div>
+            }
+    </div>
+
+    <partial name="_pagination" for="PaginationInfo" />
+    }
+    else
+    {
+    <div class="f-scholarship-items row">
+        THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
+    </div>
+    }
+</div>

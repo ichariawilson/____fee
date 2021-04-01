@@ -1,0 +1,27 @@
+<div class="f-applications">
+    <f-header url="/scholarship">Back to scholarship</f-header>
+
+    <div class="container">
+        <div class="alert alert-warning f-applications-alert" role="alert" [hidden]="!errorReceived">
+            Error requesting application list, please try later on
+        </div>
+        <article class="f-applications-titles row">
+            <section class="f-applications-title col-2">Application number</section>
+            <section class="f-applications-title col-4">Date</section>
+            <section class="f-applications-title col-2">Total</section>
+            <section class="f-applications-title col-2">Status</section>
+            <section class="f-applications-title col-2"></section>
+        </article>
+
+        <article class="f-applications-items row"
+                 *ngFor="let application of applications">
+            <section class="f-applications-item col-2">{{a.applicationnumber}}</section>
+            <section class="f-applications-item col-4">{{application.date | date:'short'}}</section>
+            <section class="f-applications-item col-2">KES {{application.total}}</section>
+            <section class="f-applications-item col-2">{{application.status}}</section>
+            <section class="f-applications-item col-2">
+                <a class="f-applications-link" routerLink="/applications/{{application.applicationnumber}}">Detail</a>
+            </section>
+        </article>
+    </div>
+</div>

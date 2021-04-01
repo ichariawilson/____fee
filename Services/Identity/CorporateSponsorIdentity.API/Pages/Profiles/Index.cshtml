@@ -1,0 +1,44 @@
+﻿@page
+@model Microsoft.Fee.Services.CorporateSponsorIdentity.API.Views.Account.IndexModel
+@{ 
+    ViewData["Title"] = "Profiles";
+}
+
+<div class="row">
+  <div class="col-sm-12">
+      <h1>Profiles</h1>
+
+    <p>
+      <a asp-page="./Create">Create a profile</a>
+    </p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <table class="table">
+      <tr>
+        <th>Profile ID</th>
+        <th>Web URL</th>
+        <th>Education Level</th>
+        <th>County</th>
+      </tr>
+      @foreach (var item in Model.ProfileDisplayList)
+      {
+        <tr>
+          <td>
+            @Html.DisplayFor(modelItem => item.ProfileId)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.WebURL)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.Level)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.County)
+          </td>
+        </tr>
+      }
+    </table>
+  </div>
+</div>

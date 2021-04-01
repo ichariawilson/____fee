@@ -1,0 +1,48 @@
+﻿@model Microsoft.Fee.WebMVC.ViewModels.Application
+
+
+<section class="f-applications_new-section">
+    <article class="f-applications_new-titles row">
+        <section class="f-applications_new-title col-12">Application details</section>
+    </article>
+
+    @for (int i = 0; i < Model.ApplicationItems.Count; i++)
+    {
+        var item = Model.ApplicationItems[i];
+
+        <article class="f-applications_new-items f-applications_new-items--border row">
+            <section class="f-applications_new-item col-md-4 hidden-md-down">
+                <img class="f-applications_new-image" src="@item.PictureUrl">
+                <input type="hidden" value="@item.PictureUrl" name=@("applicationitems[" + i + "].PictureUrl") />
+            </section>
+            <section class="f-applications_new-item f-applications_new-item--middle col-4">
+                @item.ScholarshipItemName
+                <input type="hidden" value="@item.ScholarshipItemName" name=@("applicationitems[" + i + "].ScholarshipItemName") />
+            </section>
+            <section class="f-applications_new-item f-applications_new-item--middle col-1">
+                $ @item.SlotAmount.ToString("N2")
+                <input type="hidden" value="@item.SlotAmount" name=@("applicationitems[" + i + "].SlotAmount") />
+            </section>
+            <section class="f-applications_new-item f-applications_new-item--middle col-1">
+                @item.Slots
+                <input type="hidden" value="@item.Slots" name=@("applicationitems[" + i + "].Slots") />
+            </section>
+            <section class="f-applications_new-item f-applications_new-item--middle col-2">$ @Math.Round(item.Slots * item.SlotAmount, 2).ToString("N2")</section>
+        </article>
+    }
+</section>
+
+<section class="f-applications_new-section f-applications_new-section--right">
+    <article class="f-applications_new-titles row">
+        <section class="f-applications_new-title col-9"></section>
+        <section class="f-applications_new-title col-2">Total</section>
+    </article>
+
+    <article class="f-applications_new-items row">
+        <section class="f-applications_new-item col-9"></section>
+        <section class="f-applications_new-item f-applications_new-item--mark col-2">
+            $ @Model.Total.ToString("N2")
+            <input type="hidden" value="@Model.Total" name="Total"/>
+        </section>
+    </article>
+</section>

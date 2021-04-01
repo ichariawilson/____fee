@@ -1,0 +1,74 @@
+<div class="f-applications_detail">
+    <f-header url="/applications">Back to list</f-header>
+
+    <div class="container">
+        <section class="f-applications_detail-section">
+            <article class="f-applications_detail-titles row">
+                <section class="f-applications_detail-title col-3">Application number</section>
+                <section class="f-applications_detail-title col-3">Date</section>
+                <section class="f-applications_detail-title col-3">Total</section>
+                <section class="f-applications_detail-title col-3">Status</section>
+            </article>
+
+            <article class="f-applications_detail-items row">
+                <section class="f-applications_detail-item col-3">{{application.applicationnumber}}</section>
+                <section class="f-applications_detail-item col-3">{{application.date | date:'short'}}</section>
+                <section class="f-applications_detail-item col-3">KES {{application.total}}</section>
+                <section class="f-applications_detail-item col-3">{{application.status}}</section>
+            </article>
+        </section>
+        
+        <section class="f-applications_detail-section">
+            <article class="f-applications_detail-titles row">
+                <section class="f-applications_detail-title col-12">Description</section>
+            </article>
+
+            <article class="f-applications_detail-items row">
+                <section class="f-applications_detail-item col-12">{{application.description}}</section>
+            </article>
+        </section>
+
+        <section class="f-applications_detail-section">
+            <article class="f-applications_detail-titles row">
+                <section class="f-applications_detail-title col-12">Profile</section>
+            </article>
+
+            <article class="f-applications_detail-items row">
+                <section class="f-applications_detail-item col-12">{{application.idnumber}}</section>
+            </article>
+
+            <article class="f-applications_detail-items row">
+                <section class="f-applications_detail-item col-12">{{application.request}}</section>
+            </article>
+        </section>
+
+        <section class="f-applications_detail-section">
+            <article class="f-applications_detail-titles row">
+                <section class="f-applications_detail-title col-12">Application details</section>
+            </article>
+
+            <article class="f-applications_detail-items f-applications_detail-items--bapplication row"
+                     *ngFor="let item of application.applicationitems">
+                <section class="f-applications_detail-item col-md-4 hidden-md-down">
+                    <img class="f-applications_detail-image" src="{{item.pictureurl}}">
+                </section>
+                <section class="f-applications_detail-item f-applications_detail-item--middle col-4">{{item.scholarshipitemname}}</section>
+                <section class="f-applications_detail-item f-applications_detail-item--middle col-1">KES {{item.slotamount | number:'.2-2'}}</section>
+                <section class="f-applications_detail-item f-applications_detail-item--middle col-1">{{item.slots}}</section>
+                <section class="f-applications_detail-item f-applications_detail-item--middle col-2">KES {{(item.slots * item.slotamount) | number:'.2-2'}}</section>
+            </article>
+        </section>
+
+        <section class="f-applications_detail-section f-applications_detail-section--right">
+            <article class="f-applications_detail-titles f-basket-titles--clean row">
+                <section class="f-applications_detail-title col-9"></section>
+                <section class="f-applications_detail-title col-2">Total</section>
+            </article>
+
+            <article class="f-applications_detail-items row">
+                <section class="f-applications_detail-item col-9"></section>
+                <section class="f-applications_detail-item f-applications_detail-item--mark col-2">$ {{application.total | number:'.2-2'}}</section>
+            </article>
+        </section>
+    </div>
+</div>

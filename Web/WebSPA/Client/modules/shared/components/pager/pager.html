@@ -1,0 +1,27 @@
+<div class="f-pager">
+    <div class="container">
+        <article class="f-pager-wrapper row">
+            <nav>
+                <span class="f-pager-item f-pager-item--navigable"
+                      id="Previous"
+                      [ngClass]="{'is-disabled': buttonStates?.previousDisabled}"
+                      (click)="onPreviousCliked($event)"
+                      aria-label="Previous">
+                    Previous
+                </span>
+
+                <span class="f-pager-item">
+                    Showing {{model?.items}} of {{model?.totalItems}} scholarships - Page {{model?.actualPage + 1}} - {{model?.totalPages}}
+                </span>
+
+                <span class="f-pager-item f-pager-item--navigable"
+                      id="Next"
+                      [ngClass]="{'is-disabled': buttonStates?.nextDisabled}"
+                      (click)="onNextClicked($event)"
+                      aria-label="Next">
+                    Next
+                </span>
+            </nav>
+        </article>
+    </div>
+</div>

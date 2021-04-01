@@ -1,0 +1,10 @@
+@model IEnumerable<Microsoft.Fee.WebMVC.ViewModels.Header>
+
+<div class="f-header">
+    <div class="container">
+        @foreach (var header in @Model)
+        {
+            <a class="f-header-back" asp-area="" asp-controller="@header.Controller" asp-action="Index">@header.Text</a>
+        }
+    </div>
+</div>

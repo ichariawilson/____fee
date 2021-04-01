@@ -1,0 +1,33 @@
+@model Microsoft.Fee.WebMVC.ViewModels.CartViewModels.CartComponentViewModel
+
+@{
+    ViewData["Title"] = "My Cart";
+}
+
+<a class="f-basketstatus @Model.Disabled"
+   asp-area="" 
+   asp-controller="Cart" 
+   asp-action="Index">    
+    @if (ViewBag.IsBasketInoperative == true)
+    {
+        <div class="f-basketstatus-image">
+            <img src="~/images/cart-inoperative.png" />            
+        </div>
+        <div class="f-basketstatus-badge-inoperative">
+            X           
+        </div>        
+    }
+    else
+    {
+        <div class="f-basketstatus-image">
+            <img src="~/images/cart.png" />
+        </div>
+        <div class="f-basketstatus-badge">
+            @Model.ItemsCount
+        </div>
+    }       
+</a>
+
+
+
+

@@ -1,0 +1,86 @@
+@model Microsoft.Fee.WebMVC.ViewModels.Basket
+
+@{
+    ViewData["Title"] = "My Cart";
+}
+
+<div class="container">
+    @if (ViewBag.BasketInoperativeMsg != null)
+    {
+        <br />
+        <div class="alert alert-warning" role="alert">
+            &nbsp;@ViewBag.BasketInoperativeMsg
+        </div>
+    }
+    else
+    {
+        <article class="f-basket-titles row">
+            <br />
+            @if (ViewBag.BasketInoperativeMsg != null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    &nbsp;@ViewBag.BasketInoperativeMsg
+                </div>
+            }
+
+            <section class="f-basket-title col-3">Scholarship</section>
+            <section class="f-basket-title col-3 hidden-lg-down"></section>
+            <section class="f-basket-title col-2">Amount</section>
+            <section class="f-basket-title col-2">Slots</section>
+            <section class="f-basket-title col-2">Cost</section>
+        </article>
+
+        @for (int i = 0; i < Model.Items.Count; i++)
+        {
+            var item = Model.Items[i];
+
+        <article class="f-basket-items  row">
+            <section class="f-basket-item f-basket-item--middle col-lg-3 hidden-lg-down">
+                <img class="f-basket-image" src="@item.PictureUrl" />
+            </section>
+            <section class="f-basket-item f-basket-item--middle col-3">@item.ScholarshipItemName</section>
+            <section class="f-basket-item f-basket-item--middle col-2">$ @item.SlotAmount.ToString("N2")</section>
+            <section class="f-basket-item f-basket-item--middle col-2">
+                <input type="hidden" name="@("slots[" + i +"].Key")" value="@item.Id" />
+                <input type="number" class="f-basket-input" min="1" name="@("slots[" + i +"].Value")" value="@item.Slots" />
+            </section>
+            <section class="f-basket-item f-basket-item--middle f-basket-item--mark col-2">$ @Math.Round(item.Slots * item.SlotAmount, 2).ToString("N2")</section>
+        </article>
+
+            <div class="f-basket-items--border row">
+                @if (item.OldSlotAmount != 0)
+                {
+                    <div class="alert alert-warning f-basket-margin12" role="alert">&nbsp;Note that the amount of this scholarship item changed in our Catalog. The old amount when you originally added it to the basket was $ @item.OldSlotAmount </div>
+                }
+            </div>
+            <br />
+        }
+
+        <div class="container">
+            <article class="f-basket-titles f-basket-titles--clean row">
+                <section class="f-basket-title col-10"></section>
+                <section class="f-basket-title col-2">Total</section>
+            </article>
+
+            <article class="f-basket-items row">
+                <section class="f-basket-item col-10"></section>
+                <section class="f-basket-item f-basket-item--mark col-2">$ @Model.Total().ToString("N2")</section>
+            </article>
+
+            <article class="f-basket-items row">
+                <section class="f-basket-item col-7"></section>
+                <section class="f-basket-item col-2">
+                    <button class="btn f-basket-checkout" name="name" value="" type="submit">[ Update ]</button>
+                </section>
+                <section class="f-basket-item col-3">
+                    <input type="submit"
+                           class="btn f-basket-checkout"
+                           value="[ Checkout ]" name="action" />
+                </section>
+            </article>
+        </div>
+    }
+    
+</div>
+
+    

@@ -1,0 +1,19 @@
+@using Microsoft.Fee.WebMVC.Services
+@using Microsoft.Fee.WebMVC.ViewModels
+
+@model Microsoft.Fee.WebMVC.ViewModels.Basket
+@inject IIdentityParser<ApplicationUser> UserManager
+
+@{
+     ViewData["Title"] = "My Cart";
+     var headerList = new List<Header>() {
+          new Header() { Controller = "Scholarship", Text = "Back to scholarships" }};
+}
+
+<form method="post" id="cartForm">
+    <div class="f-basket">
+        <partial name="_Header" model="headerList"/>
+
+        @await Component.InvokeAsync("CartList", new { user = UserManager.Parse(User) })
+    </div>
+</form>
